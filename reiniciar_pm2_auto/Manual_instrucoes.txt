@@ -1,1 +1,42 @@
+- Crie um script shell (por exemplo, restart_pm2.sh):
+------
+#!/bin/bash
+echo "sua_senha_deploy" | sudo -S -u deploy pm2 restart all
+------
 
+- Torne o script executável:
+chmod +x restart_pm2.sh
+
+- Certifique-se de que o script tenha permissões restritas:
+chmod 700 restart_pm2.sh
+
+* Certifique-se de substituir "sua_senha_deploy" pela senha real do usuário deploy. Com isso, o script estará pronto para ser executado pelo seu arquivo PHP.
+
+
+Abra o crontab:
+Execute o comando abaixo para editar o crontab do usuário atual:
+crontab -e
+
+Adicione uma nova linha ao crontab:
+No editor que abrir, adicione uma linha para agendar a execução do seu script. Por exemplo, para executar o script todos os dias às 3 da manhã, adicione:
+0 3 * * * /caminho/para/restart_pm2.sh
+
+Aqui está a explicação dos campos:
+0 - Minuto (0)
+3 - Hora (3 AM)
+* - Dia do mês (qualquer)
+* - Mês (qualquer)
+* - Dia da semana (qualquer)
+
+Salve e saia do editor:
+Dependendo do editor que você está usando (geralmente nano ou vim), salve as alterações e saia. No nano, você pode fazer isso pressionando Ctrl+O para salvar e Ctrl+X para sair.
+Verifique se o cron está rodando:
+
+Certifique-se de que o serviço cron está ativo e rodando:
+sudo systemctl status cron
+
+Se não estiver rodando, você pode iniciá-lo com:
+sudo systemctl start cron
+
+E habilitá-lo para iniciar automaticamente no boot:
+sudo systemctl enable cron
